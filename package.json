@@ -1,0 +1,22 @@
+{
+  "name": "localtalk",
+  "version": "1.0.0",
+  "description": "A modern Craigslist and Meetup in one. Everything local in one place!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/one-to-one/localtalk.git"
+  },
+  "author": "one-to-one",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/one-to-one/localtalk/issues"
+  },
+  "homepage": "https://github.com/one-to-one/localtalk#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
