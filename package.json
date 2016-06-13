@@ -4,7 +4,8 @@
   "description": "A modern Craigslist and Meetup in one. Everything local in one place!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./run.sh"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,11 @@
   },
   "homepage": "https://github.com/one-to-one/localtalk#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.1.18",
+    "mongoose": "^4.4.20",
+    "morgan": "^1.7.0"
   }
 }
