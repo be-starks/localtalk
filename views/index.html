@@ -1,62 +1,32 @@
 <!doctype html>
 
-<html ng-app="localtalk">
+<html ng-app="localtalk" ng-controller="GlobalController">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 
     <title></title>
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
     <style>
         html                    { overflow-y:scroll; }
-        body                    { padding-top:50px; }
+        body                    { padding-top:0px; margin-top: 0px;}
+        a                       { cursor: pointer; }
+        *                       { font-family: 'Roboto', san serif; font-weight: 300;}
+        h4                      { font-size: 17px; font-family: 'Roboto', san serif; font-weight: 200;}
     </style>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script><!-- load angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-animate.js">
+
+    </script>
+
     <script src="angularInit.js"></script>
-
 </head>
-<body ng-controller="mainController">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#"><strong>Local</strong>Talk</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-
-        <div id="my-listings" class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <div class="checkbox" ng-repeat="(key, listing) in listings">
-                    <label>
-                        <input type="checkbox" ng-click="deleteListing(listing._id)"> {{ listing._id }}
-                    </label>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="new-listing-form" class="row">
-            <div class="col-sm-8 col-sm-offset-2 text-center">
-                <form>
-                    <div class="form-group">
-
-                        <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-                        <input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg" ng-click="createListing()">Add</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<body>
+    <div ng-include="'header.html'"></div>
+    <div ng-view></div>
 </body>
 </html>

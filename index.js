@@ -3,9 +3,9 @@ var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var Settings = require("./settings.js");
 
-var app = express();
+var User = require('./models/user.js');
 
-require("./mongodbConnection")(startServer);
+var app = express();
 
 app.use(require("morgan")("dev"));
 app.use(bodyParser.json());
@@ -16,8 +16,13 @@ app.use(express.static("static"));
 app.use(require("method-override")());
 // app.use(require("cookie-parser"));
 
-var listingRouter = express.Router();
+var p1 = require("./mongodbConnection")();
 
+var userRouter = express.Router();
+var p2 = require("./userRoutes")(userRouter);
+app.use(userRouter);
+
+var listingRouter = express.Router();
 require("./routes")(listingRouter);
 app.use("/listings", listingRouter);
 
@@ -26,7 +31,7 @@ app.get('*', function(req, res) {
     res.sendFile(__dirname + '/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
-function startServer() {
+Promise.all([p1, p2]).then(function startServer(value) {
     console.log("connection successful!");
     app.listen(Settings.port);
-}
+});

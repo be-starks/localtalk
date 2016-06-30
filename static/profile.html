@@ -1,0 +1,23 @@
+<style media="screen">
+    .small-jumbotron {
+        border-radius: 6px;
+        background-color: rgb(238, 238, 238);
+        padding: 14px;
+        margin: 24px;
+    }
+    .small-jumbotron * {
+        font-size: 14px;
+        margin: 0;
+        font-style: italic;
+        font-weight: 500;
+    }
+    .small-jumbotron span { width: 24px; display: inline-block;}
+</style>
+
+<div class="container" ng-if="!!globals.user" ng-controller="UserController">
+    <div class="small-jumbotron">
+        <label>{{globals.user.username}}</label>
+        <span></span>
+        <label>{{globals.user.email ? globals.user.email : "__email__"}}</label>
+    </div>
+</div>

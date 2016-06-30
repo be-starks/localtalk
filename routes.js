@@ -22,7 +22,7 @@ module.exports = function (router) {
     router.delete('/:id', function (req, res) {
         Listing.remove({_id: req.params.id}, function (err) {
             if(err) return console.log(err);
-            res.json({error: err});
+            res.json({ error: err });
         });
     });
 }

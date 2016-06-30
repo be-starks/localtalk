@@ -13,11 +13,13 @@ mongoose.connect(Settings.db.url, function(err) {
     }
 });
 
-module.exports = function (cb) {
-    if(connected) {
-        cb();
-    }
-    else {
-        connectionsPending.push(cb);
-    }
+module.exports = function () {
+    return new Promise(function(resolve, reject) {
+        if(connected) {
+            resolve();
+        }
+        else {
+            connectionsPending.push(resolve);
+        }
+    });
 }

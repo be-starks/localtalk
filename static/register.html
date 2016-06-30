@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/login-styles.css" media="screen" title="no title" charset="utf-8">
+
+<div class="text-center" ng-controller="UserController">
+    <div class="text-center login-container" style="display:inline-block;">
+        <h4 class="unwrappable" style="margin: 25px; margin-bottom:15px;">Create a LocalTalk account</h4>
+        <div class="alert alert-danger error-message" role="alert" ng-if="errorMessage.trim().length > 0">
+            {{errorMessage}}
+        </div>
+        <form ng-child-focus="formFocused();" ng-child-blur="formBlurred();" id="credentialForm" name="credentialForm" class="form" novalidate>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" name="username" ng-model="formData.username" required minlength="5" maxlength="20" pattern="^[A-Z|a-z|0-9|_.@]+$">
+                <label class="input-error-message fade-transitions" ng-if="credentialForm.username.$dirty && credentialForm.username.$invalid">
+                    Must have a length between 4 and 21 characters. {_.@} symbols allowed.</label>
+            </div>
+            <div class="form-group">
+                <input  type="text" class="form-control" placeholder="Email" ng-model="formData.email" name="email"
+                    required pattern="^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$">
+                <label class="input-error-message fade-transitions" ng-if="credentialForm.email.$dirty && credentialForm.email.$invalid">
+                    Invalid email address.</label>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" ng-model="formData.password" name="password" required minlength="8" maxlength="28" pattern="^(?=.*\d)(?=.*[$@$!%*?&()\-\\\^=_+\[\]?]).+$">
+                <label class="input-error-message fade-transitions" ng-if="credentialForm.password.$dirty && credentialForm.password.$invalid">
+                    Must have a length between 7 and 29 characters and contain at least one number and one special symbol.</label>
+            </div>
+            <div class="form-group text-center">
+                <input class="btn btn-primary" ng-disabled="credentialForm.$invalid" type="button" value="Register" ng-click="register();">
+            </div>
+        </form>
+    </div>
+</div>

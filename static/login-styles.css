@@ -1,0 +1,82 @@
+
+    .unwrappable {
+        white-space: nowrap;
+        overflow: visible;
+    }
+
+    .login-container {
+        padding: 24px;
+        padding-top: 0px;
+        width: 335px;
+    }
+
+    .absolute-center {
+        left: 0px;top: 0px;bottom: 0px; right:0px;
+        margin: auto;
+    }
+
+    .error-message {
+        text-align: left;
+    }
+
+    .input-error-message {
+        font-size: 10px; color: rgb(200,10,0); padding-left: 1.3em;
+    }
+
+    /*#credentialForm div {
+        text-align: left;
+    }*/
+
+    div.line {
+        height: 1px;
+        width: 100%;
+        border-top: 1px solid rgb(200,200,200);
+    }
+    div.line-parent i {
+        z-index: 10;
+        width:50px;
+        height: 10px; line-height: 10px;
+        background-color: white;
+        font-size: 13px;
+        color: rgb(100,100,100);
+    }
+    div.line-parent * { position: absolute; }
+    div.line-parent {
+        margin-bottom: 10px;
+        margin-top:15px;
+        position: relative;
+        height: 30px;
+        text-align: center;
+    }
+
+    a.register-link {
+        float: right;
+        font-size: 12px;
+        padding: 3px;
+        padding-right: 10px;
+    }
+
+
+
+.fade-transitions.ng-enter {
+    -webkit-animation: enter_sequence 1s linear; /* Safari/Chrome */
+    -moz-animation: enter_sequence 1s linear; /* Firefox */
+    -o-animation: enter_sequence 1s linear; /* Opera */
+    animation: enter_sequence 1s linear; /* IE10+ and Future Browsers */
+}
+@-webkit-keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+@-moz-keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+@-o-keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+@keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}

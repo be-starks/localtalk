@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
 var ListingSchema = new mongoose.Schema({
+    userId: mongoose.Schema.Types.ObjectId,
     enabled: { type: Boolean, default: true },
     title: String,
     details: String,
-    submitted: { type: Date, default: Date.now },
+    submitted: { type: Date, default: Date.now }
 });
 
 ListingSchema.statics.mapAll = function (selector, cb) {
