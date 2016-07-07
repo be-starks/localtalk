@@ -21,7 +21,7 @@ userSchema.methods.toSecureObject = function () {
     delete secureObj.password;
     delete secureObj.googleId;
     delete secureObj.uuid;
-    delete secureObj.id;
+    // delete secureObj.id;
     return secureObj;
 }
 

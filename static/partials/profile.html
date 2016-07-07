@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="/css/styles.css" media="screen" charset="utf-8">
+
+<style media="screen">
+    .user-listings .panel-item {
+        display: inline-block; min-width: 200px; max-width: 300px; max-height: 300px;
+    }
+    .user-listings .panel-item .panel-heading {
+        white-space: nowrap; overflow-x: hidden;
+    }
+</style>
+
+<div class="container" ng-if="!!globals.user" ng-controller="ProfileController">
+    <div class="small-jumbotron">
+        <label>{{globals.user.username}}</label>
+        <span></span>
+        <label>{{globals.user.email ? globals.user.email : "__email__"}}</label>
+    </div>
+    <div class="user-listings">
+        <div class="panel panel-default panel-item" ng-repeat="(key, listing) in listings">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{listing.headline}}</h4>
+            </div>
+            <div class="panel-body">
+                {{listing.description}}
+            </div>
+        </div>
+    </div>
+</div>

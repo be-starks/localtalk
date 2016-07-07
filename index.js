@@ -23,7 +23,7 @@ var p2 = require("./userRoutes")(userRouter);
 app.use(userRouter);
 
 var listingRouter = express.Router();
-require("./routes")(listingRouter);
+require("./listingRoutes")(listingRouter);
 app.use("/listings", listingRouter);
 
 //Angular

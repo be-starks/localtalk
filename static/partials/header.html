@@ -1,0 +1,62 @@
+<style media="screen">
+    .simple-nav {
+        background-color: #f8f8f8;
+        display: block;
+        border-bottom: 1px rgb(231, 231, 231) solid;
+    }
+    .simple-nav a { color: #777; text-decoration: none; }
+
+    .simple-nav a:hover {
+        color: #333;
+        background-color: transparent;
+        text-decoration: none;
+    }
+    .simple-nav .simple-nav-header *:hover {
+        color: #5e5e5e;
+    }
+    .simple-nav-list {
+        display: inline-block;
+    }
+    .simple-nav-list span {
+        height: 50px;
+        display: inline-block;
+    }
+    .simple-nav-list span a {
+        line-height: 24px;
+        padding: 0px 10px;
+        margin: 13px 0px;
+        display: inline-block;
+    }
+    .simple-nav-list .active {
+        background-color: #f2f2f2;
+    }
+    .simple-nav-list .active {
+        border-left: 1px #f0f0f0 solid;
+    }
+</style>
+
+<nav class="simple-nav" ng-controller="UserController">
+    <div class="container">
+        <div class="simple-nav-header">
+            <a class="navbar-brand" href="/"><strong>Local</strong>Talk</a>
+        </div>
+        <div class="simple-nav-list" style="padding-right:36px;">
+            <span class= "{{location.path().indexOf('/listing/') == 0 ? 'active' : ''}}" ng-if="!!globals.user.username">
+                <a href="/listing/create">Post Listing</a>
+            </span>
+        </div>
+        <div class="simple-nav-list pull-right">
+            <span  class= "{{location.path().indexOf('/profile') == 0 ? 'active' : ''}}" ng-if="!!globals.user.username">
+                <a href="/profile">{{globals.user.username}}</a>
+            </span>
+            <span class= "{{location.path().indexOf('/login') == 0 && !globals.user.username ? 'active' : ''}}">
+                <a ng-if="!globals.user.username" href="/login">Sign in / Register</a>
+                <a class= "" ng-if="!!globals.user.username" ng-click="signOut();">Sign out</a>
+            </span>
+        </div>
+        <!-- <ul class="nav navbar-nav">
+            <li class=""><a href="/">Home</a></li>
+        </ul> -->
+
+    </div>
+</nav>

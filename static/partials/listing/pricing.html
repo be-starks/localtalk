@@ -1,0 +1,67 @@
+<style media="screen">
+    .open-pricing-tab {
+        padding-bottom: 20px;
+        border-bottom: 1px rgb(242,242,242) solid;
+    }
+
+    .form-group.monetary-input {
+        display: inline-block; width:100px;
+    }.form-group.monetary-input:not(:last-child) {
+        margin-right: 24px;
+    }
+    .open-pricing-tab .input-group-addon, .open-pricing-tab .form-control {
+        height: 33px;
+        padding-top:6px;
+        padding-bottom: 6px;
+        font-size: 14px;
+        line-height: 14px;
+    }
+</style>
+
+<h4>Pricing / Pay</h4>
+
+<ul class="simple-tabs">
+    <li ng-class="{active: pricingOption == 'standard'}"><input type="radio" ng-model="pricingOption" name="tabs" value="standard" id="pricingStandard" ng-init="pricingOption = 'standard'"> <label for="pricingStandard">Standard</label></li>
+    <li ng-class="{active: pricingOption == 'range'}"><input type="radio" ng-model="pricingOption" name="tabs" value="range" id="pricingRange"> <label for="pricingRange">Range</label></li>
+    <!-- <li ng-class="{active: pricingOption == 'text'}"><input type="radio" ng-model="pricingOption" name="tabs" value="text" id="pricingText"> <label for="pricingText">Text</label></li> -->
+    <li ng-class="{active: pricingOption == ''}"><input type="radio" ng-model="pricingOption" name="tabs" value="" id="pricingNone"> <label for="pricingNone">None</label></li>
+</ul>
+
+<div class="open-pricing-tab">
+    <div ng-if="pricingOption == 'standard'" class="">
+        <div class="form-group monetary-input">
+            <div class="input-group" ng-class="{'has-error': listingForm.price.$invalid}">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="price" name="price" ng-model="formData.pricing.price"
+                    pattern="^\d+(,\d{3})*(\.\d*)?$" value="" min="0" ng-minlength="1" required="true">
+            </div>
+        </div>
+    </div>
+    <div ng-if="pricingOption == 'range'" class="">
+        <div class="form-group monetary-input">
+            <label class="control-label" for="min">Min</label>
+            <div class="input-group" ng-class="{'has-error': listingForm.min.$invalid}">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="min" name="min" ng-model="formData.pricing.min"
+                    pattern="^\d+(,\d{3})*(\.\d*)?$" value="" min="0" ng-minlength="1" required="true" lte="max"  ng-change="listingForm.max.$validate()">
+            </div>
+        </div>
+        <div class="form-group monetary-input">
+            <label class="control-label" for="max">Max</label>
+            <div class="input-group" ng-class="{'has-error': listingForm.max.$invalid}">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="max" name="max" ng-model="formData.pricing.max"
+                    pattern="^\d+(,\d{3})*(\.\d*)?$" value="" min="0" ng-minlength="1" required="true" gte="min" ng-change="listingForm.min.$validate()">
+            </div>
+        </div>
+    </div>
+    <div ng-if="pricingOption == ''" class="">
+        <p>
+            This listing will not be able to be sorted by price/pay if a number or range is withheld.
+        </p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': listingForm.priceInfo.$invalid}">
+        <input class="form-control" type="text" name="priceInfo" ng-model="formData.pricing.info" value="" placeholder="Textual financial information." ng-maxlength="100">
+        <span class="help-block" ng-if="listingForm.priceInfo.$invalid">Length must not exceed 100 characters.</span>
+    </div>
+</div>

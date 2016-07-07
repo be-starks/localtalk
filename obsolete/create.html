@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="/css/styles.css" media="screen" charset="utf-8">
+
+<style media="screen">
+    div.input-container {
+        max-width: 500px;
+        margin-right:0px;
+        margin-left:0px;
+        margin:auto;
+        padding: 0px 24px;
+    }
+    div.input-container>.form-control{
+        margin-bottom:24px;
+        resize: none;
+        display: block;
+    }
+    .form-group.monetary-input {
+        display: inline-block; width:100px;
+    }.form-group.monetary-input:not(:last-child) {
+        margin-right: 24px;
+    }
+
+    ul.simple-tabs {
+        padding-left: 10px;
+        margin-top: 10px;
+    } ul.simple-tabs li {
+        padding-left: 10px;
+        display: inline;
+        text-decoration: none;
+        border-bottom: 1px rgb(200,200,200) solid;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 10px;
+        margin: -2px;
+        white-space: nowrap;
+    }ul.simple-tabs li.active {
+        border: 1px rgb(200,200,200) solid;
+        border-bottom: none;
+    }
+</style>
+
+<div class="container" ng-controller="ListingController">
+    <div style="margin:24px;">
+        <div id="map" style="height:200px; margin-bottom: 24px;"></div>
+        <div>
+            <label for="">Listing Location -- </label><span id="address" style="padding-left: 20px;"></span>
+        </div>
+    </div>
+    <div class="input-container">
+        <input class="form-control" type="text" name="headline" value="" placeholder="Headline" maxlength="100" ng-model="headline">
+        <textarea class="form-control" type="text" name="details" placeholder="Description" value="" rows="5" maxlength="5000" ng-model="details"></textarea>
+        <br>
+        <label>Pricing</label>
+
+        <ul class="simple-tabs">
+            <li ng-class="{active: pricingOption == 'standard'}"><input type="radio" ng-model="pricingOption" name="tabs" value="standard" id="pricingStandard" ng-init="pricingOption = 'standard'"> <label for="pricingStandard">Standard</label></li>
+            <li ng-class="{active: pricingOption == 'range'}"><input type="radio" ng-model="pricingOption" name="tabs" value="range" id="pricingRange"> <label for="pricingRange">Range</label></li>
+            <li ng-class="{active: pricingOption == 'text'}"><input type="radio" ng-model="pricingOption" name="tabs" value="text" id="pricingText"> <label for="pricingText">Text</label></li>
+            <li ng-class="{active: pricingOption == ''}"><input type="radio" ng-model="pricingOption" name="tabs" value="" id="pricingNone"> <label for="pricingNone">None</label></li>
+        </ul>
+
+        <div class="">
+            <div ng-hide="pricingOption != 'standard'" class="">
+                <h3>Standard</h3>
+                <p>Some content.</p>
+            </div>
+            <div ng-hide="pricingOption != 'range'" class="">
+                <h3>Range</h3>
+                <p>Some content in menu 1.</p>
+            </div>
+            <div ng-hide="pricingOption != 'text'" class="">
+                <h3>Text</h3>
+                <p>Some content in menu 2.</p>
+            </div>
+        </div>
+        <div class="form-group monetary-input">
+            <label class="control-label" for="min">Min</label>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="min" name="min" ng-model="formData.min" aria-describedby="minSuccessStatus">
+            </div>
+        </div>
+        <div class="form-group monetary-input">
+            <label class="control-label" for="max">Max</label>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="max" name="max" ng-model="formData.max" aria-describedby="minSuccessStatus">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function initMap() {
+        var map = new LocalTalkMap(document.getElementById('map'));
+        map.onMarkerPositionChanged(function (mapData) {
+            var currentLocation = mapData.position;
+            console.log(currentLocation.lat, currentLocation.lng, currentLocation.address);
+            document.getElementById("address").innerHTML = currentLocation.address ? currentLocation.address : "\"" + currentLocation.lat + ", " + currentLocation.lng + "\"";
+        });
+    }
+</script>
+<script src="/js/localTalkMap.js" charset="utf-8"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBJnlX8d298-3t6F45FoKrrECkn6s6kHE&callback=initMap">
+</script>

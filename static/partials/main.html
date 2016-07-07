@@ -4,7 +4,7 @@
         <div class="col-sm-4 col-sm-offset-4">
             <div class="checkbox" ng-repeat="(key, listing) in listings">
                 <label>
-                    <input type="checkbox" ng-click="deleteListing(listing._id)"> {{ listing.title }}
+                    <a href="/listings/{{listing._id}}">{{ listing.headline }}</a>
                 </label>
             </div>
 
@@ -15,10 +15,7 @@
         <div class="col-sm-8 col-sm-offset-2 text-center">
             <form>
                 <div class="form-group">
-                    <!-- <input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.title"> -->
                 </div>
-
-                <!-- <button type="submit" class="btn btn-primary btn-lg" ng-click="createListing()">Add</button> -->
             </form>
         </div>
     </div>
