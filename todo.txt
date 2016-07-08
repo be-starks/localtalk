@@ -1,0 +1,9 @@
+Server-side form validation on both /register and /listing/create
+Make a /listing/edit functionality + form validation
+Make a text input for location.
+Include location in listings.
+Last updated into ListingSchema
+
+Tags
+Searching functionality
+Results limiting/pages/tags

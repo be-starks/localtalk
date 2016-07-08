@@ -4,7 +4,10 @@ var userAuth = require('./userAuth.js');
 
 module.exports = function (router) {
     function getListingMap(req, res) {
-        Listing.mapAll(req.params.userId ? {userId: req.params.userId} : {}, function (listings) {
+        var query = {};
+        if(req.params.userId) query.userId = req.params.userId;
+        if(req.params.id) query._id = req.params.id;
+        Listing.mapAll(query, function (listings) {
             res.json(listings);
         });
     }
@@ -17,9 +20,6 @@ module.exports = function (router) {
     });
 
     router.post("/create", userAuth.isLoggedIn, function (req, res) {
-        //form validation
-
-
         var body = req.body;
 
         var listingData = { userId: req.user._id, details: body.details, headline: body.headline };

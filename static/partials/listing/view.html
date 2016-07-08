@@ -1,0 +1,10 @@
+<div class="container" ng-controller="ViewListingController">
+    <br>
+    <h4>{{listing.headline}}</h4>
+    <p>
+        {{listing.details}}
+    </p>
+    <p ng-if="hasNumericPrice(listing) || listing.pricing.info" class="listing-pricing">
+        <b style="margin-right: 7px;" ng-if="hasNumericPrice(listing)">{{getPriceStr(listing)}}</b> <small>{{listing.pricing.info}}</small>
+    </p>
+</div>

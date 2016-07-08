@@ -1,0 +1,14 @@
+.small-jumbotron {
+    border-radius: 6px;
+    background-color: rgb(238, 238, 238);
+    padding: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.small-jumbotron * {
+    font-size: 14px;
+    margin: 0;
+    font-style: italic;
+    font-weight: 500;
+}
+.small-jumbotron span { width: 24px; display: inline-block;}

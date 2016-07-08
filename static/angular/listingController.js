@@ -1,37 +1,4 @@
-app.directive('gte', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            ctrl.$validators.gte = function(modelValue, viewValue) {
-                if (ctrl.$isEmpty(modelValue))
-                    return true;
-                if(isFinite(modelValue)) {
-                    var min = document.getElementById(attrs['gte']).value;
-                    return min.length == 0 || isFinite(min) && parseFloat(min) <= parseFloat(modelValue);
-                }
-                return false;
-            };
-        }
-    };
-});
-app.directive('lte', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            ctrl.$validators.lte = function(modelValue, viewValue) {
-                if (ctrl.$isEmpty(modelValue))
-                    return true;
-                if(isFinite(modelValue)) {
-                    var max = document.getElementById(attrs['lte']).value;
-                    return max.length == 0 || isFinite(max) && parseFloat(max) >= parseFloat(modelValue);
-                }
-                return false;
-            };
-        }
-    };
-});
-
-app.controller("ListingController", ["$scope","$http","$location", function mainController($scope, $http, $location) {
+app.controller("ListingController", ["$scope","$http","$location", 'viewPassObject', function mainController($scope, $http, $location, viewPassObject) {
     $scope.formData = {};
 
     $scope.submitListing = function () {
@@ -47,4 +14,38 @@ app.controller("ListingController", ["$scope","$http","$location", function main
                 console.log('Error: ', data);
             });
     };
+    $scope.deleteListing = function(id) {
+        $http.delete('listings/' + id)
+            .success(function(data) {
+                if(!data.error)
+                    delete $scope.listings[id];
+                else {
+                    console.log('Error: ' + data.error);
+                }
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+}]);
+
+app.controller('ViewListingController', ["$scope","$http","$routeParams", function mainController($scope, $http, $routeParams) {
+    $scope.listing = null;
+    if(!$scope.listing) {
+        $http.get('/listings/', { params: {id: $routeParams.id} }).success(function (data) {
+            console.log(data);
+            if(!data.error)
+                $scope.listing = data[$routeParams.id];
+        }).error(function (data) {
+            console.log('Error ', data);
+        });
+    }
+    $scope.getPriceStr = function (listing) {
+        if(listing.pricing) {
+            return listing.pricing.price ? "$" + listing.pricing.price : (listing.pricing.min ? "$" + listing.pricing.min + "-$" + listing.pricing.max : "");
+        }
+    }
+    $scope.hasNumericPrice = function (listing) {
+        return listing.pricing && (listing.pricing.price || (listing.pricing.min && listing.pricing.max));
+    }
 }]);
