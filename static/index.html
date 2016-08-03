@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html ng-app="localtalk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+
+    <base href="/">
+
+    <title></title>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'> -->
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link rel="stylesheet" href="/libs/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/libs/roboto.css">
+    <style>
+        html                    { height: 100%;}
+        body                    { padding-top:0px; margin-top: 0px; min-height: 100%; position: relative;}
+        a                       { cursor: pointer; }
+        *                       { font-family: 'Roboto', san serif; font-weight: 300;}
+        h4                      { font-size: 17px; font-family: 'Roboto', san serif; font-weight: 200;}
+
+        h5                      { font-size: 15.5px; font-family: 'Roboto', san serif; font-weight: 200;}
+
+        div.footer {
+            width: 100%;
+            height: 115px;
+            background-color: rgb(242,242,242);
+            bottom: 0px;
+            position: absolute;
+        }
+        div.footer-ghost {
+            height: 115px;
+        }
+        b { font-weight: 400; }
+
+        /*http://stackoverflow.com/questions/20829332/bootstrap-3-modal-creates-scrollbar-when-opened*/
+        body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+            margin-right: 0;
+        }
+    </style>
+
+    <script src="/js/loadScript.js" charset="utf-8"></script>
+    <!-- load jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script>if(!window.jQuery) loadScript({src:"/libs/jquery.min.js"}); </script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script>if(typeof $().emulateTransitionEnd != 'function') loadScript({src:"/libs/bootstrap-3.3.7-dist/js/bootstrap.min.js", crossorigin: "anonymous", integrity: "sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"}); </script>
+
+    <!-- load angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-animate.js"></script>
+    <script>
+        if(typeof angular == 'undefined') {
+            loadScript({src: "/libs/angular.min.js"});
+            loadScript({src: "/libs/angular-route.js"});
+            loadScript({src: "/libs/angular-animate.js"});
+        }
+    </script>
+
+    <script src="angular/angularInit.js"></script>
+    <script src="angular/mainController.js"></script>
+    <script src="angular/userController.js"></script>
+    <script src="angular/listingController.js"></script>
+    <script src="angular/profileController.js"></script>
+</head>
+<body>
+    <div ng-include="'/partials/header.html'"></div>
+    <div ng-view></div>
+    <div class="footer"></div>
+    <div class="footer-ghost"></div>
+
+    <script src="/libs/moment.min.js" charset="utf-8"></script>
+</body>
+</html>

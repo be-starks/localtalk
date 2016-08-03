@@ -1,0 +1,15 @@
+<style media="screen">
+    .medium-small {
+        font-size: 13px;
+    }
+</style>
+
+<p ng-bind-html="newlinesToLineBreak(listing) | trusted">
+</p>
+<p ng-if="hasNumericPrice(listing) || listing.pricing.info" class="listing-pricing">
+    <b style="margin-right: 7px;" ng-if="hasNumericPrice(listing)">{{getPriceStr(listing)}}</b> <span class="medium-small">{{listing.pricing.info}}</span>
+</p>
+<p ng-if="listing.location" style="margin-top:20px;" class="medium-small">
+    <span ng-if="!listing.location.address">"{{listing.location.lat}}, {{listing.location.lng}}"</span>
+    <span ng-if="listing.location.address">{{listing.location.address}}</span>
+</p>

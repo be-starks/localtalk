@@ -5,7 +5,6 @@ var connected = false;
 
 var connectionsPending = [];
 
-
 mongoose.connect(Settings.db.url, function(err) {
     if (err) throw err;
     else {

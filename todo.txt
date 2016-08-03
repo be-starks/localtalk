@@ -1,9 +1,9 @@
-Server-side form validation on both /register and /listing/create
-Make a /listing/edit functionality + form validation
-Make a text input for location.
-Include location in listings.
-Last updated into ListingSchema
+import js file in js.
 
 Tags
 Searching functionality
 Results limiting/pages/tags
+
+Learn best way to share objects and code (functions) between controllers.
+
+if listing is filled out and user is not logged in, it would be helpful to log in and then continue with the listing.

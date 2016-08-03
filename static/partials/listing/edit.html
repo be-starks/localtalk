@@ -1,0 +1,196 @@
+<link rel="stylesheet" href="/css/styles.css" media="screen" charset="utf-8">
+
+<style media="screen">
+    .page-container {
+        padding: 24px;
+    }
+
+    @media (max-width: 700px) {
+        .page-container {
+            padding: 12px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .page-container {
+            padding: 6px;
+        }
+    }
+
+    div.input-container {
+        max-width: 500px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin: auto;
+        padding: 0px 24px;
+        padding-top: 4px;
+    }
+
+    div.input-container textarea {
+        resize: none !important;
+    }
+
+    ul.simple-tabs {
+        padding-left: 10px;
+        margin-top: 10px;
+        border-bottom: 1px rgb(200, 200, 200) solid;
+        display: block;
+        padding-bottom: -1px;
+    }
+
+    ul.simple-tabs li {
+        padding-left: 10px;
+        display: inline-block;
+        text-decoration: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 10px;
+        white-space: nowrap;
+        transform: translateY(1px);
+    }
+
+    ul.simple-tabs li label {
+        margin-bottom: 0px;
+    }
+
+    ul.simple-tabs li.active {
+        border: 1px rgb(200, 200, 200) solid;
+        border-bottom: none;
+        background-color: white;
+    }
+
+    .open-pricing-tab {
+        padding-left: 10px;
+    }
+
+    h4.white {
+        font-weight: 300;
+    }
+
+    .help-block {
+        font-size: 12px;
+    }
+
+    span.addressDeletionSegments {
+        border-bottom: rgb(190, 0, 0) solid 1px;
+    }
+
+    span.addressDeletionSegments>span {
+        color: rgb(190, 0, 0);
+        top: 2px;
+    }
+</style>
+
+<div class="container page-container">
+    <form name="listingForm" novalidate>
+        <div>
+            <div class="alert alert-danger" ng-if="errorMessage">
+                {{errorMessage}}
+            </div>
+            <div id="map" style="height:200px; margin-bottom: 24px;"></div>
+            <div class="form-group" ng-class="{'has-error': listingForm.lat.$invalid || listingForm.lng.$invalid}">
+                <div class="pre-map-container">
+                    <input id="mapSearchInput" class="g-map-controls" type="text" placeholder="Enter Location">
+                </div>
+                <label for="address">Listing Location -- </label>
+                <input type="text" class="hidden" name="lat" id="lat" ng-model="formData.location.lat" required value>
+                <input type="text" class="hidden" name="lng" id="lng" ng-model="formData.location.lng" required value>
+                <span id="address" style="padding-left: 20px;" data-rel="addressPopup"></span>
+                <input type="text" class="hidden" id="addressInput" name="address" ng-model="formData.location.address" value>
+                <span id="locationHelp" class="help-block" ng-if="listingForm.lat.$invalid || listingForm.lng.$invalid">Location is a required field.</span>
+            </div>
+        </div>
+        <div class="input-container">
+            <div class="form-group" ng-class="{'has-error': listingForm.headline.$invalid}">
+                <input class="form-control" type="text" name="headline" value="" placeholder="Headline" ng-model="formData.headline" ng-minlength="10" ng-maxlength="100" required="true" aria-describedby="headlineHelp">
+                <span id="headlineHelp" class="help-block" ng-if="listingForm.headline.$invalid">Headline must have a minimum length of 10 and a maximum of 100.</span>
+            </div>
+            <div class="form-group" ng-class="{'has-error': listingForm.description.$invalid}">
+                <textarea class="form-control" type="text" name="description" placeholder="Description" value="" rows="5" ng-model="formData.description" maxlength="5000" aria-describedby="descriptionHelp"></textarea>
+                <span id="descriptionHelp" ng-if="listingForm.description.$invalid" class="help-block">Description must have a length no greater than 5000 characters.</span>
+            </div>
+            <div class="form-group" ng-class="{'has-error': listingForm.url.$invalid}">
+                <input class="form-control" type="text" name="url" value="" placeholder="[ http://www.example.com/more-info ]" ng-model="formData.url" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" ng-maxlength="2000">
+                <span id="urlHelp" ng-if="listingForm.url.$invalid" class="help-block">Must be a semi-standard valid HTTP url. Must have a length no greater than 200 characters.</span>
+            </div>
+
+
+            <!-- <h4>File Attachments</h4>
+            <br> -->
+            <div ng-include="'/partials/listing/pricing.html'"></div>
+            <br>
+            <a class="btn btn-primary" value="" style="padding: 0 40px;" ng-disabled="listingForm.$invalid" ng-click="submitListing();">
+                <h4 class="white">Submit Listing</h4></a>
+            <br>
+            <br>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    // $(document).ready(function() {
+    //     $("form").bind("keypress", function(e) {
+    //         if (e.keyCode == 13) {
+    //             return false;
+    //         }
+    //     });
+    // });
+
+    function deleteAddressSegment(e) {
+        var elementOfInterest = e.target.parentNode;
+        var addressSpan = elementOfInterest.parentNode;
+        addressSpan.removeChild(elementOfInterest);
+
+        var addressInput = document.getElementById('addressInput');
+        addressInput.value = addressSpan.innerHTML.replace(/<[^>]+>/g, "").replace(/\s+,/g, ",");
+        $(addressInput).trigger('input');
+    }
+
+    function initMap() {
+        var mapSearchInput = document.getElementById('mapSearchInput');
+        var options = {searchInputElement:mapSearchInput, geolocation: true};
+
+        var scope = angular.element("#map").scope();
+        if(scope.formData.location && scope.formData.location.lat != null && scope.formData.location.lng != null
+            && isFinite(scope.formData.location.lng) && isFinite(scope.formData.location.lat)) {
+            options.lat = scope.formData.location.lat;
+            options.lng = scope.formData.location.lng;
+            options.geolocation = false;
+            updateAddressElement(scope.formData.location.address);
+        }
+
+        var map = new LocalTalkMap(document.getElementById('map'), options);
+        mapSearchInput.style.visibility = 'visible';
+        map.addMarkerPositionChangedHandler(function(mapData) {
+            var currentLocation = mapData.position;
+            var lat = document.getElementById('lat');
+            lat.value = mapData.position.lat;
+            $(lat).trigger('input');
+            var lng = document.getElementById('lng');
+            lng.value = mapData.position.lng;
+            $(lng).trigger('input');
+
+            updateAddressElement(currentLocation.address, currentLocation.lat, currentLocation.lng);
+        }, !options.lat /*in edit mode; don't fire event immediately*/);
+    }
+
+    function updateAddressElement(addressText, lat, lng) {
+        var addressElement = document.getElementById("address");
+        if (addressText) {
+            addressElement.innerHTML = "";
+            var addressSegments = addressText.split(", ");
+            for (var i = 0; i < addressSegments.length - 3; i++) {
+                addressElement.innerHTML += "<span class='addressDeletionSegments'>" + addressSegments[i] + " <span class='glyphicon glyphicon-remove'" +
+                    " onclick='deleteAddressSegment(event)'></span>, </span>";
+            }
+            addressElement.innerHTML += addressSegments.slice(addressSegments.length - 3).join(", ");
+        } else {
+            addressElement.innerHTML = "\"" + lat + ", " + lng + "\"";
+        }
+        var addressInput = document.getElementById('addressInput');
+        addressInput.value = addressElement.innerHTML.replace(/<[^>]+>/g, "").replace(/\s+,/g, ",");
+        $(addressInput).trigger('input');
+    }
+</script>
+<script src="/js/localTalkMap.js" charset="utf-8"></script>
+<div ng-include="'/partials/map-import.html'"></div>

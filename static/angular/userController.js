@@ -1,6 +1,6 @@
 app.controller("UserController", ['$scope', '$http', '$location', '$rootScope', function userController($scope, $http, $location, $rootScope) {
     $scope.formData = {};
-
+    $scope.location = $location;
     $scope.signIn = function () {
         $http.post('/login', $scope.formData)
             .success(function (data) {

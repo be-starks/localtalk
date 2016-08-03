@@ -1,3 +1,14 @@
+Math.toRadians = function(d) {
+	return d * Math.PI / 180;
+}
+Math.toDegrees = function(r) {
+	return r * 180 / Math.PI;
+}
+Math.isNumber = function (n) {
+	return (n || n === 0) && isFinite(n) && n != null;
+}
+
+
 var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
@@ -28,7 +39,7 @@ app.use("/listings", listingRouter);
 
 //Angular
 app.get('*', function(req, res) {
-    res.sendFile(__dirname + '/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(__dirname + '/static/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 Promise.all([p1, p2]).then(function startServer(value) {

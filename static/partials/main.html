@@ -1,22 +1,117 @@
+<link rel="stylesheet" href="/css/styles.css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="/css/small-jumbotron.css" media="screen" title="no title" charset="utf-8">
+
+<style media="screen">
+    button.has-error {
+        color: #d33;
+        border-color: #ecc;
+    }
+    #locationDialog {
+        position: absolute;
+        z-index: 10;
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+        opacity: 0;
+        pointer-events:none;
+    }
+    div.small-jumbotron>*{
+        margin: 5px 0px;
+    }
+    div.alert {
+        padding: 5px 15px;
+        margin: 10px 0px;
+    }
+    span.waiting-for-content {
+        font-style: normal !important;
+    }
+
+    div.listing-container {
+        display: table;
+        margin-bottom: 10px;
+    } div.listing-container>* {
+        display: table-row;
+    }
+    div.listing-container>*>* {
+        display: table-cell;
+        padding: 3px 0px;
+    } div.listing-container>*>*:not(:first-child) {
+        padding-left: 20px;
+    }
+</style>
+
 <div class="container" ng-controller="MainController">
-
-    <div id="my-listings" class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-            <div class="checkbox" ng-repeat="(key, listing) in listings">
-                <label>
-                    <a href="/listings/{{listing._id}}">{{ listing.headline }}</a>
-                </label>
-            </div>
-
+    <form name="searchForm">
+        <div class="alert alert-danger" ng-if="errorMessage">
+            {{errorMessage}}
         </div>
-    </div>
+        <div class="small-jumbotron">
+            <button id="locationButton" class="btn btn-default" type="button" ng-class="{'has-error':searchForm.lat.$invalid || searchForm.lng.$invalid}">Location...</button>
+            <small class="search-container" style="display:inline-block; white-space: nowrap;">search within
+                <select class="form-control" ng-change="searchFormChanged()" ng-model="formData.radius" ng-options="option.name for option in searchDistanceOptions track by option.value">
+                </select>
+            </small>
+            <input type="text" class="search-box" ng-model="formData.searchText" value="" placeholder="Search for listings">
+            <button class="btn btn-primary" type="button" ng-disabled="searchForm.$invalid" ng-click="searchFormChanged()">
+                <span id="searchButton" ng-if="waitingForQueryResult == false">Go</span>
+                <span ng-if="waitingForQueryResult == true"><span class="glyphicon glyphicon-refresh spinning waiting-for-content"></span></span>
+            </button>
+        </div>
 
-    <div id="new-listing-form" class="row">
-        <div class="col-sm-8 col-sm-offset-2 text-center">
-            <form>
-                <div class="form-group">
+        <div class="" id="locationDialog" tabindex="-1">
+            <div id="map" style="height:100%;"></div>
+            <div class="pre-map-container">
+                <input id="mapSearchInput" class="g-map-controls" type="text" placeholder="Enter Location">
+                <a id="dismissModalButton" class="btn btn-primary btn-ok">Ok</a>
+            </div>
+            <input type="text" ng-change="searchFormChanged()" class="hidden" name="lat" id="lat" ng-model="formData.lat" required value min="-90" max="90">
+            <input type="text" ng-change="searchFormChanged()" class="hidden" name="lng" id="lng" ng-model="formData.lng" required value min="-180" max="180">
+        </div>
+    </form>
+    <div id="my-listings" class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="listing-container" ng-repeat="(date, slot) in datedListings">
+                <div class="listing" ng-repeat="(id, listing) in slot">
+                    <h5><span ng-if="$index == 0">{{date}}</span></h5>
+                    <h5><a href="/listings/{{listing._id}}">{{ listing.headline }}</a></h5>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script src="/js/localTalkMap.js" charset="utf-8"></script>
+<script type="text/javascript">
+function initMap() {
+    var mapSearchInput = document.getElementById('mapSearchInput');
+    var options = {searchInputElement:mapSearchInput, geolocation: true};
+
+    var mapWrapper = new LocalTalkMap(document.getElementById('map'), options);
+    mapSearchInput.style.visibility = 'visible';
+    mapWrapper.addMarkerPositionChangedHandler(function(mapData) {
+        var currentLocation = mapData.position;
+        var lat = document.getElementById('lat');
+        lat.value = mapData.position.lat;
+        $(lat).trigger('input');
+        var lng = document.getElementById('lng');
+        lng.value = mapData.position.lng;
+        $(lng).trigger('input');
+
+        $("#locationButton").text(currentLocation.address);
+    }, true);
+    mapWrapper.getMap().controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById("dismissModalButton"));
+}
+$(document).ready(function () {
+    $("#locationButton").click(function() {
+        angular.element(document.getElementById('locationDialog')).animate({opacity: "1"}, 200);
+        angular.element(document.getElementById('locationDialog')).css({pointerEvents: "auto"});
+    });
+    $("#dismissModalButton").click(function() {
+        angular.element(document.getElementById('locationDialog')).animate({opacity: "0"}, 200);
+        angular.element(document.getElementById('locationDialog')).css({pointerEvents: "none"});
+    });
+});
+</script>
+
+<div ng-include="'/partials/map-import.html'"></div>

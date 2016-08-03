@@ -25,21 +25,28 @@ app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode({enabled:true, requireBase: false});
     $routeProvider.when('/', {
        templateUrl: '/partials/main.html'
-    }).when('/login', {
+    })
+    .when('/login', {
        templateUrl: '/partials/login.html'
-    }).when('/register', {
+    })
+    .when('/register', {
        templateUrl: '/partials/register.html'
-    }).when('/profile', {
+    })
+    .when('/profile', {
         templateUrl: '/partials/profile.html',
-        resolve: {
-            factory: ensureUserLoggedIn
-        }
-    }).when('/listing/create', {
-        templateUrl: '/partials/listing/create.html',
-        resolve: {
-            factory: ensureUserLoggedIn
-        }
-    }).when('/listings/:id', {
+        resolve: { factory: ensureUserLoggedIn }
+    })
+    .when('/listing/create', {
+        templateUrl: '/partials/listing/edit.html',
+        resolve: { factory: ensureUserLoggedIn },
+        controller: "CreateListingController"
+    })
+    .when('/listing/edit/:id', {
+        templateUrl: '/partials/listing/edit.html',
+        resolve: { factory: ensureUserLoggedIn },
+        controller: "EditListingController"
+    })
+    .when('/listings/:id', {
         templateUrl: '/partials/listing/view.html'
     }).otherwise({redirectTo: '/'});
  });
@@ -93,40 +100,8 @@ app.config(function($locationProvider, $routeProvider) {
 
  });
 
-// app.directive('ngChildFocus', function() {
-//     return {
-//         restrict: 'A',
-//         replace: 'false',
-//         link: function(scope, elem, attrs) {
-//             elem.find("input, select, textarea").bind("focus", function () {
-//                 // console.log((scope.showInvalidInputMessages ? "show" : "hide") + " invalid input messages");
-//                 scope.$eval(elem.attr('ng-child-focus'), {});
-//             });
-//         }
-//     };
-// });
-// app.directive('ngChildBlur', function() {
-//     return {
-//         restrict: 'A',
-//         replace: 'false',
-//         link: function(scope, elem, attrs) {
-//             elem.find("input, select, textarea").bind("blur", function () {
-//                 // console.log((scope.showInvalidInputMessages ? "show" : "hide") + " invalid input messages");
-//                 scope.$eval(elem.attr('ng-child-blur'), {});
-//             });
-//         }
-//     };
-// });
-
-app.controller("MainController", function mainController($scope, $http) {
-    $scope.formData = {};
-
-    $http.get('listings/')
-        .success(function(data) {
-            $scope.listings = data;
-            console.log(data);
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
-});
+app.filter('trusted', ['$sce', function($sce){
+    return function(text) {
+        return $sce.trustAsHtml(text);
+    };
+}]);
